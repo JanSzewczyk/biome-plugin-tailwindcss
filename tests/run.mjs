@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import { execSync } from "node:child_process";
-import { writeFileSync, unlinkSync, existsSync } from "node:fs";
+import { existsSync, unlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { resolve, dirname } from "node:path";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = dirname(dirname(fileURLToPath(import.meta.url)));
@@ -13,7 +13,10 @@ let passed = 0;
 let failed = 0;
 
 function lint(fixture, ruleFile) {
-  const cfg = JSON.stringify({ plugins: [ruleFile], linter: { enabled: true } });
+  const cfg = JSON.stringify({
+    plugins: [ruleFile],
+    linter: { enabled: true },
+  });
   const cfgPath = resolve(tmpdir(), `biome-plugin-tw-${Date.now()}.json`);
   writeFileSync(cfgPath, cfg);
   let output = "";
@@ -48,9 +51,9 @@ function expect(val, msg) {
 
 // ─── no-arbitrary-value ────────────────────────────────────────────────────────
 console.log("\nno-arbitrary-value");
-const arbRule    = resolve(ROOT, "rules/no-arbitrary-value.grit");
+const arbRule = resolve(ROOT, "rules/no-arbitrary-value.grit");
 const arbInvalid = resolve(ROOT, "tests/invalid/no-arbitrary-value.jsx");
-const arbValid   = resolve(ROOT, "tests/valid/no-arbitrary-value.jsx");
+const arbValid = resolve(ROOT, "tests/valid/no-arbitrary-value.jsx");
 
 test("invalid fixtures trigger diagnostics", () => {
   const { hits } = lint(arbInvalid, arbRule);
@@ -63,9 +66,9 @@ test("valid fixtures are clean", () => {
 
 // ─── enforces-negative-arbitrary-values ───────────────────────────────────────
 console.log("\nenforces-negative-arbitrary-values");
-const negRule    = resolve(ROOT, "rules/enforces-negative-arbitrary-values.grit");
+const negRule = resolve(ROOT, "rules/enforces-negative-arbitrary-values.grit");
 const negInvalid = resolve(ROOT, "tests/invalid/enforces-negative-arbitrary-values.jsx");
-const negValid   = resolve(ROOT, "tests/valid/enforces-negative-arbitrary-values.jsx");
+const negValid = resolve(ROOT, "tests/valid/enforces-negative-arbitrary-values.jsx");
 
 test("invalid fixtures trigger diagnostics", () => {
   const { hits } = lint(negInvalid, negRule);
@@ -78,9 +81,9 @@ test("valid fixtures are clean", () => {
 
 // ─── migration-from-tailwind-3 ────────────────────────────────────────────────
 console.log("\nmigration-from-tailwind-3");
-const migRule    = resolve(ROOT, "rules/migration-from-tailwind-3.grit");
+const migRule = resolve(ROOT, "rules/migration-from-tailwind-3.grit");
 const migInvalid = resolve(ROOT, "tests/invalid/migration-from-tailwind-3.jsx");
-const migValid   = resolve(ROOT, "tests/valid/migration-from-tailwind-3.jsx");
+const migValid = resolve(ROOT, "tests/valid/migration-from-tailwind-3.jsx");
 
 test("invalid fixtures trigger diagnostics", () => {
   const { hits } = lint(migInvalid, migRule);
@@ -93,9 +96,9 @@ test("valid fixtures are clean", () => {
 
 // ─── enforces-size-shorthand ──────────────────────────────────────────────────
 console.log("\nenforces-size-shorthand");
-const szRule    = resolve(ROOT, "rules/enforces-size-shorthand.grit");
+const szRule = resolve(ROOT, "rules/enforces-size-shorthand.grit");
 const szInvalid = resolve(ROOT, "tests/invalid/enforces-size-shorthand.jsx");
-const szValid   = resolve(ROOT, "tests/valid/enforces-size-shorthand.jsx");
+const szValid = resolve(ROOT, "tests/valid/enforces-size-shorthand.jsx");
 
 test("invalid fixtures trigger diagnostics", () => {
   const { hits } = lint(szInvalid, szRule);

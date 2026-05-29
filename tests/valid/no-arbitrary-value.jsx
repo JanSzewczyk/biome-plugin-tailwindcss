@@ -15,15 +15,11 @@ export const Button = ({ active }) => (
 
 // Valid: CSS module key lookup — bracket is not a Tailwind arbitrary value
 import styles from "./styles.module.css";
-export const ModuleClass = () => (
-  <div className={styles["card"]}>content</div>
-);
+export const ModuleClass = () => <div className={styles["card"]}>content</div>;
 
 // Valid: ternary without arbitrary values
 export const Conditional = ({ primary }) => (
-  <div className={primary ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"}>
-    conditional classes
-  </div>
+  <div className={primary ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-900"}>conditional classes</div>
 );
 
 // Valid: Tailwind v4 data-attribute variant (arbitrary SELECTOR, not arbitrary VALUE)

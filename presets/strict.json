@@ -1,8 +1,6 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
-  "plugins": [
-    "./node_modules/biome-plugin-tailwindcss/rules/all.grit"
-  ],
+  "plugins": ["./node_modules/biome-plugin-tailwindcss/rules/all.grit"],
   "linter": {
     "enabled": true,
     "rules": {

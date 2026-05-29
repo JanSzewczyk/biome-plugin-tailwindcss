@@ -1,13 +1,9 @@
 engine biome(1.0)
 language js(jsx)
 
-JsxAttribute(name = $name) as $attr where {
-    $name <: r".*class.*",
-    $attr <: r".*[^a-zA-Z0-9-]-[a-z]+-.*",
-    $attr <: r".*[a-zA-Z0-9)]][^:].*",
-    register_diagnostic(
-        span = $attr,
-        message = "Use `property-[-value]` instead of `-property-[value]` for negative arbitrary values. E.g. `top-[-5px]` not `-top-[5px]`.",
-        severity = "error"
-    )
+JsxAttribute(name=$name) as $attr where {
+  $name <: r".*class.*",
+  $attr <: r".*[^a-zA-Z0-9-]-[a-z]+-.*",
+  $attr <: r".*[a-zA-Z0-9)]][^:].*",
+  register_diagnostic(span=$attr, message="Use `property-[-value]` instead of `-property-[value]` for negative arbitrary values. E.g. `top-[-5px]` not `-top-[5px]`.", severity="error")
 }

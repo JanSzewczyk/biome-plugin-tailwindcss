@@ -1,35 +1,31 @@
 engine biome(1.0)
 language js(jsx)
 
-JsxAttribute(name = $name) as $attr where {
-    $name <: r".*class.*",
-    $attr <: or {
-        r".*bg-opacity-.*",
-        r".*text-opacity-.*",
-        r".*border-opacity-.*",
-        r".*divide-opacity-.*",
-        r".*ring-opacity-.*",
-        r".*placeholder-opacity-.*",
-        r".*flex-grow.*",
-        r".*flex-shrink.*",
-        r".*overflow-ellipsis.*",
-        r".*[^-]decoration-slice.*",
-        r".*[^-]decoration-clone.*",
-        r".*outline-none.*",
-        r".*[^-]shadow-sm[^-\w].*",
-        r".*[^-]shadow[^-\w].*",
-        r".*[^-]drop-shadow-sm[^-\w].*",
-        r".*[^-]drop-shadow[^-\w].*",
-        r".*[^-]blur-sm[^-\w].*",
-        r".*[^-]blur[^-\w].*",
-        r".*[^-]backdrop-blur-sm[^-\w].*",
-        r".*[^-]backdrop-blur[^-\w].*",
-        r".*[^-]rounded-sm[^-\w].*",
-        r".*[^-]rounded[^-\w].*"
-    },
-    register_diagnostic(
-        span = $attr,
-        message = "This Tailwind CSS v3 class was renamed or removed in v4. See https://tailwindcss.com/docs/upgrade-guide",
-        severity = "warn"
-    )
+JsxAttribute(name=$name) as $attr where {
+  $name <: r".*class.*",
+  $attr <: or {
+    r".*bg-opacity-.*",
+    r".*text-opacity-.*",
+    r".*border-opacity-.*",
+    r".*divide-opacity-.*",
+    r".*ring-opacity-.*",
+    r".*placeholder-opacity-.*",
+    r".*flex-grow.*",
+    r".*flex-shrink.*",
+    r".*overflow-ellipsis.*",
+    r".*[^-]decoration-slice.*",
+    r".*[^-]decoration-clone.*",
+    r".*outline-none.*",
+    r".*[^-]shadow-sm[^-\w].*",
+    r".*[^-]shadow[^-\w].*",
+    r".*[^-]drop-shadow-sm[^-\w].*",
+    r".*[^-]drop-shadow[^-\w].*",
+    r".*[^-]blur-sm[^-\w].*",
+    r".*[^-]blur[^-\w].*",
+    r".*[^-]backdrop-blur-sm[^-\w].*",
+    r".*[^-]backdrop-blur[^-\w].*",
+    r".*[^-]rounded-sm[^-\w].*",
+    r".*[^-]rounded[^-\w].*"
+  },
+  register_diagnostic(span=$attr, message="This Tailwind CSS v3 class was renamed or removed in v4. See https://tailwindcss.com/docs/upgrade-guide", severity="warn")
 }

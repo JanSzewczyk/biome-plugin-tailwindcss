@@ -1,7 +1,7 @@
 {
   "name": "biome-plugin-tailwindcss",
   "version": "0.1.0",
-  "description": "Biome GritQL plugin with Tailwind CSS linting rules — mirrors eslint-plugin-tailwindcss",
+  "description": "Biome GritQL plugin with Tailwind CSS linting rules",
   "keywords": [
     "biome",
     "biome-plugin",
