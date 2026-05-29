@@ -2,7 +2,7 @@
 
 ## Adding a new GritQL rule
 
-1. Create a new file in `rules/` with the `.grit` extension. The file name should match the ESLint rule name (kebab-case).
+1. Create a new file in `rules/` with the `.grit` extension. Use kebab-case for the file name.
 
 2. Use the standard wrapper pattern. Always restrict to `className` and `class` JSX attributes using the `^class(Name)?=` anchor:
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-A Biome GritQL plugin that mirrors [`eslint-plugin-tailwindcss`](https://github.com/francoismassart/eslint-plugin-tailwindcss) for projects using **Tailwind CSS v4** that have migrated from ESLint to Biome. Rules are written in GritQL (`.grit` files) and require **Biome ≥ 2.0.0**.
+A Biome GritQL plugin that adds Tailwind CSS v4 linting rules for JSX class attributes. Rules are written in GritQL (`.grit` files) and require **Biome ≥ 2.0.0**.
 
 ## Commands
 
@@ -42,19 +42,6 @@ The test runner (`tests/run.mjs`) writes a temporary `biome.json` config per tes
 | `enforces-negative-arbitrary-values.grit` | Wrong form `-top-[5px]` instead of `top-[-5px]` | error |
 | `migration-from-tailwind-3.grit` | Tailwind v3 classes removed/renamed in v4 | warn |
 | `enforces-size-shorthand.grit` | `w-X h-X` with same value → use `size-X` | hint |
-
-## Parity with eslint-plugin-tailwindcss
-
-| ESLint rule | Status |
-|---|---|
-| `classnames-order` | Delegated to Biome's native `useSortedClasses` rule |
-| `enforces-negative-arbitrary-values` | ✓ Plugin rule |
-| `no-arbitrary-value` | ✓ Plugin rule |
-| `migration-from-tailwind-3` | ✓ Plugin rule (v3→v4 migration) |
-| `no-contradicting-classname` | ✗ Needs multi-class analysis (Biome core) |
-| `enforces-shorthand` | ✗ Needs multi-class analysis (Biome core) |
-| `no-custom-classname` | ✗ Needs Tailwind config access |
-| `no-unnecessary-arbitrary-value` | ✗ Needs Tailwind config access |
 
 ## Adding a new rule
 
