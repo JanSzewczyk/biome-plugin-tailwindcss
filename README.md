@@ -5,9 +5,10 @@
 [![npm version](https://img.shields.io/npm/v/biome-plugin-tailwindcss.svg)](https://www.npmjs.com/package/biome-plugin-tailwindcss)
 [![npm downloads](https://img.shields.io/npm/dm/biome-plugin-tailwindcss.svg)](https://www.npmjs.com/package/biome-plugin-tailwindcss)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PR Checks](https://github.com/JanSzewczyk/biome-plugin-tailwindcss/actions/workflows/pr-check.yml/badge.svg)](https://github.com/JanSzewczyk/biome-plugin-tailwindcss/actions/workflows/pr-check.yml)
 [![Biome ≥ 2.0](https://img.shields.io/badge/Biome-%E2%89%A52.0-60A5FA?logo=&logoColor=white)](https://biomejs.dev/)
 
-**Tailwind CSS v4 linting rules for [Biome](https://biomejs.dev/) — a GritQL plugin mirroring `eslint-plugin-tailwindcss`**
+**Tailwind CSS v4 linting rules for [Biome](https://biomejs.dev/) — enforce design scale, detect deprecated classes, and suggest shorthands**
 
 [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Rules](#-rules) • [Contributing](#-contributing)
 
@@ -17,9 +18,9 @@
 
 ## 👋 Hello there!
 
-`biome-plugin-tailwindcss` is a [Biome](https://biomejs.dev/) GritQL plugin that brings Tailwind CSS-specific linting rules to teams that have migrated — or are migrating — from ESLint to Biome. It targets **Tailwind CSS v4** and provides rule parity with [`eslint-plugin-tailwindcss`](https://github.com/francoismassart/eslint-plugin-tailwindcss) wherever GritQL's single-node pattern matching allows.
+`biome-plugin-tailwindcss` is a [Biome](https://biomejs.dev/) GritQL plugin that adds Tailwind CSS v4 linting rules for JSX class attributes. It helps teams keep their Tailwind usage consistent — enforcing design scale values, catching deprecated v3 classes, and suggesting available shorthands.
 
-Three rules ship today. A fourth — class ordering — is already built into Biome core as [`useSortedClasses`](https://biomejs.dev/linter/rules/use-sorted-classes/). The remaining four require multi-class analysis or Tailwind config access; they are documented below as candidates for upstream Biome contributions.
+Four plugin rules ship today. Class ordering is already built into Biome core as [`useSortedClasses`](https://biomejs.dev/linter/rules/use-sorted-classes/). Rules that require multi-class analysis or Tailwind config access are documented below as candidates for upstream Biome contributions.
 
 ## ✨ Features
 
@@ -27,21 +28,22 @@ Three rules ship today. A fourth — class ordering — is already built into Bi
 
 - **⚠ `no-arbitrary-value`** — flags arbitrary CSS values in class attributes (`w-[42px]`, `text-[#bada55]`) and encourages the use of configured design-scale values
 - **✖ `enforces-negative-arbitrary-values`** — catches the wrong negative-arbitrary form `-top-[5px]` and enforces the correct `top-[-5px]` syntax
-- **⚠ `migration-from-tailwind-3`** — detects 22 class patterns that were renamed or removed in Tailwind CSS v4: all six opacity utilities (`bg-opacity-*` → `bg-black/50`), flex shorthands (`flex-grow` → `grow`), shadow/blur/rounded scale renames, `outline-none` → `outline-hidden`, and more
+- **⚠ `migration-from-tailwind-3`** — detects 22 class patterns renamed or removed in Tailwind CSS v4: all six opacity utilities (`bg-opacity-*` → `bg-black/50`), flex shorthands (`flex-grow` → `grow`), shadow/blur/rounded scale renames, `outline-none` → `outline-hidden`, and more
+- **💡 `enforces-size-shorthand`** — detects `w-X h-X` pairs with equal values and suggests the `size-X` shorthand introduced in Tailwind v4; covers all 48 default size values with zero false positives
 
 ### 🏗️ Built-in Biome Coverage
 
 - **✅ `classnames-order`** — already built into Biome as [`useSortedClasses`](https://biomejs.dev/linter/rules/use-sorted-classes/) in the `nursery` group; see the [usage section](#-usage) for how to enable it
 
-### 📋 Full Parity Matrix
+### 📋 Rule Coverage
 
-| ESLint rule | Status | Source |
+| Rule | Status | Source |
 |---|---|---|
 | `classnames-order` | ✅ Biome core (`useSortedClasses`) | [docs](https://biomejs.dev/linter/rules/use-sorted-classes/) |
 | `no-arbitrary-value` | ✅ This plugin | [source](./rules/no-arbitrary-value.grit) |
 | `enforces-negative-arbitrary-values` | ✅ This plugin | [source](./rules/enforces-negative-arbitrary-values.grit) |
 | `migration-from-tailwind-3` | ✅ This plugin | [source](./rules/migration-from-tailwind-3.grit) |
-| `enforces-size-shorthand` | ✅ This plugin (v4 bonus) | [source](./rules/enforces-size-shorthand.grit) |
+| `enforces-size-shorthand` | ✅ This plugin | [source](./rules/enforces-size-shorthand.grit) |
 | `no-contradicting-classname` | 🔧 Needs Biome core PR | — |
 | `enforces-shorthand` | 🔧 Needs Biome core PR | — |
 | `no-custom-classname` | 🔧 Needs Biome core PR | — |
@@ -56,6 +58,7 @@ Three rules ship today. A fourth — class ordering — is already built into Bi
 - [🚀 Usage](#-usage)
 - [📚 Rules](#-rules)
 - [❓ Why are some rules missing?](#-why-are-some-rules-missing)
+- [📃 Scripts](#-scripts)
 - [🧪 Testing](#-testing)
 - [📁 Project Structure](#-project-structure)
 - [🤝 Contributing](#-contributing)
@@ -100,7 +103,8 @@ If you already have a `biome.json`, add a `plugins` array and extend your existi
   "plugins": [
     "./node_modules/biome-plugin-tailwindcss/rules/no-arbitrary-value.grit",
     "./node_modules/biome-plugin-tailwindcss/rules/enforces-negative-arbitrary-values.grit",
-    "./node_modules/biome-plugin-tailwindcss/rules/migration-from-tailwind-3.grit"
+    "./node_modules/biome-plugin-tailwindcss/rules/migration-from-tailwind-3.grit",
+    "./node_modules/biome-plugin-tailwindcss/rules/enforces-size-shorthand.grit"
   ],
   "linter": {
     "enabled": true,
@@ -120,7 +124,7 @@ The `plugins` key is merged with any existing rules — it does not replace them
 
 ### Option A — Recommended preset (copy-paste ready)
 
-Copy the contents of [`presets/recommended.json`](./presets/recommended.json) into your `biome.json`. It enables all three plugin rules and the built-in `useSortedClasses` at `warn` severity.
+Copy the contents of [`presets/recommended.json`](./presets/recommended.json) into your `biome.json`. It enables all four plugin rules and the built-in `useSortedClasses` at `warn` severity.
 
 ### Option B — Strict preset
 
@@ -246,7 +250,7 @@ Detects Tailwind CSS v3 class names that were **renamed or removed** in [Tailwin
 
 **Severity:** `warn`
 
-> **Tip:** After running this rule, use Biome's `--fix --unsafe` flag together with manual review for the shadow/blur/rounded scale renames — the scale shifted, so the correct v4 replacement depends on your intended visual weight.
+> **Tip:** After running this rule, use manual review for the shadow/blur/rounded scale renames — the scale shifted, so the correct v4 replacement depends on your intended visual weight.
 
 ---
 
@@ -274,7 +278,7 @@ Covers all 48 default Tailwind v4 size values: numeric scale (`0`–`96`) and na
 
 ## ❓ Why are some rules missing?
 
-The four remaining `eslint-plugin-tailwindcss` rules require capabilities that [GritQL](https://biomejs.dev/reference/gritql/) does not currently support:
+The four rules listed as 🔧 require capabilities that [GritQL](https://biomejs.dev/reference/gritql/) does not currently support:
 
 - **Multi-class analysis** — `no-contradicting-classname` and `enforces-shorthand` need to compare multiple class tokens in the same attribute against a property map. GritQL matches one AST node at a time.
 - **Tailwind config access** — `no-custom-classname` and `no-unnecessary-arbitrary-value` need to resolve the full class list from your Tailwind theme, which requires executing or statically parsing `tailwind.config.js` (or `@theme` in v4 CSS files).
@@ -289,6 +293,21 @@ These rules must be implemented directly in the [Biome repository](https://githu
 | `no-unnecessary-arbitrary-value` | `noUnnecessaryArbitraryValue` |
 
 Tailwind v4's CSS-first configuration (`@theme` in `.css` files) makes this significantly more tractable — Biome can parse CSS natively, which opens the door to reading custom configuration without executing JavaScript.
+
+---
+
+## 📃 Scripts
+
+| Script | Command | Description |
+|---|---|---|
+| `test` | `node tests/run.mjs` | Run all rule tests |
+| `biome:check` | `biome check .` | Check formatting + lint |
+| `biome:ci` | `biome ci --reporter=github` | CI mode with GitHub annotations |
+| `biome:fix` | `biome check --write .` | Auto-fix formatting and safe lint fixes |
+| `biome:format` | `biome format .` | Check formatting only |
+| `biome:format:fix` | `biome format --write .` | Auto-fix formatting |
+| `biome:lint` | `biome lint .` | Lint only (no format) |
+| `biome:lint:fix` | `biome lint --write .` | Auto-fix safe lint issues |
 
 ---
 
@@ -320,27 +339,35 @@ npm test
 
 ```
 biome-plugin-tailwindcss/
-├── rules/                   # GritQL rule files
+├── rules/                              # GritQL rule files
 │   ├── no-arbitrary-value.grit
 │   ├── enforces-negative-arbitrary-values.grit
 │   ├── migration-from-tailwind-3.grit
-│   └── all.grit             # All rules in a single or {} block
-├── presets/                 # Ready-to-use biome.json snippets
-│   ├── recommended.json     # Recommended rules at warn severity
-│   └── strict.json          # All rules via all.grit at error severity
+│   ├── enforces-size-shorthand.grit
+│   └── all.grit                        # All rules in a single or {} block
+├── presets/                            # Ready-to-use biome.json snippets
+│   ├── recommended.json                # All 4 rules at warn/hint severity
+│   └── strict.json                     # All rules via all.grit at error severity
 ├── tests/
-│   ├── run.mjs              # Custom Node.js test runner
-│   ├── valid/               # Fixtures that must produce 0 diagnostics
+│   ├── run.mjs                         # Custom Node.js test runner
+│   ├── valid/                          # Fixtures that must produce 0 diagnostics
 │   │   ├── no-arbitrary-value.jsx
 │   │   ├── enforces-negative-arbitrary-values.jsx
-│   │   └── migration-from-tailwind-3.jsx
-│   └── invalid/             # Fixtures that must produce ≥ 1 diagnostic
+│   │   ├── migration-from-tailwind-3.jsx
+│   │   └── enforces-size-shorthand.jsx
+│   └── invalid/                        # Fixtures that must produce ≥ 1 diagnostic
 │       ├── no-arbitrary-value.jsx
 │       ├── enforces-negative-arbitrary-values.jsx
-│       └── migration-from-tailwind-3.jsx
-├── CLAUDE.md                # Claude Code guidance
-├── CONTRIBUTING.md          # Guide for adding new rules
-├── biome.json               # Dev linting config
+│       ├── migration-from-tailwind-3.jsx
+│       └── enforces-size-shorthand.jsx
+├── .github/
+│   ├── workflows/
+│   │   ├── pr-check.yml                # Biome CI + test runner on every PR
+│   │   └── publish.yml                 # semantic-release to npm on main push
+│   └── dependabot.yml
+├── CLAUDE.md                           # Claude Code guidance
+├── CONTRIBUTING.md                     # Guide for adding new rules
+├── biome.json                          # Dev linting config
 └── package.json
 ```
 
@@ -352,7 +379,7 @@ biome-plugin-tailwindcss/
 
 ### Important Configuration Files
 
-- **`presets/recommended.json`** — Production-ready config with all plugin rules at `warn` and `useSortedClasses` enabled
+- **`presets/recommended.json`** — Production-ready config with all four plugin rules and `useSortedClasses` enabled
 - **`presets/strict.json`** — Tighter config using `all.grit` bundle with `useSortedClasses` at `error`
 - **`CONTRIBUTING.md`** — GritQL regex tips, the standard wrapper pattern, and the list of rules that belong in Biome core
 
