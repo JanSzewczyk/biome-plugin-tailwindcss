@@ -6,11 +6,7 @@ export const Good = () => (
 );
 
 // Valid: correct form for negative arbitrary values — property-[-value]
-export const GoodForm = () => (
-  <div className="top-[-5px] left-[-10px]">
-    correct negative arbitrary form
-  </div>
-);
+export const GoodForm = () => <div className="top-[-5px] left-[-10px]">correct negative arbitrary form</div>;
 
 // Valid: multi-component class names with arbitrary values (not negative-prefix form)
 export const GoodMultiPart = () => (
@@ -21,7 +17,5 @@ export const GoodMultiPart = () => (
 
 // Valid: responsive variants with negative utilities
 export const GoodResponsive = () => (
-  <div className="md:-translate-x-4 lg:-rotate-12">
-    responsive negative utilities without arbitrary values
-  </div>
+  <div className="md:-translate-x-4 lg:-rotate-12">responsive negative utilities without arbitrary values</div>
 );
