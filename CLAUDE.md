@@ -41,6 +41,7 @@ The test runner (`tests/run.mjs`) writes a temporary `biome.json` config per tes
 | `no-arbitrary-value.grit` | Tailwind arbitrary values like `w-[42px]` | warn |
 | `enforces-negative-arbitrary-values.grit` | Wrong form `-top-[5px]` instead of `top-[-5px]` | error |
 | `migration-from-tailwind-3.grit` | Tailwind v3 classes removed/renamed in v4 | warn |
+| `enforces-size-shorthand.grit` | `w-X h-X` with same value → use `size-X` | hint |
 
 ## Parity with eslint-plugin-tailwindcss
 

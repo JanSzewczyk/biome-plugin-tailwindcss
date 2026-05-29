@@ -25,6 +25,13 @@
     "README.md"
   ],
   "scripts": {
+    "biome:check": "biome check .",
+    "biome:ci": "biome ci --reporter=github",
+    "biome:fix": "biome check --write .",
+    "biome:format": "biome format .",
+    "biome:format:fix": "biome format --write .",
+    "biome:lint": "biome lint .",
+    "biome:lint:fix": "biome lint --write .",
     "test": "node tests/run.mjs"
   },
   "peerDependencies": {

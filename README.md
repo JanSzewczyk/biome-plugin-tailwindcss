@@ -41,6 +41,7 @@ Three rules ship today. A fourth — class ordering — is already built into Bi
 | `no-arbitrary-value` | ✅ This plugin | [source](./rules/no-arbitrary-value.grit) |
 | `enforces-negative-arbitrary-values` | ✅ This plugin | [source](./rules/enforces-negative-arbitrary-values.grit) |
 | `migration-from-tailwind-3` | ✅ This plugin | [source](./rules/migration-from-tailwind-3.grit) |
+| `enforces-size-shorthand` | ✅ This plugin (v4 bonus) | [source](./rules/enforces-size-shorthand.grit) |
 | `no-contradicting-classname` | 🔧 Needs Biome core PR | — |
 | `enforces-shorthand` | 🔧 Needs Biome core PR | — |
 | `no-custom-classname` | 🔧 Needs Biome core PR | — |
@@ -249,6 +250,28 @@ Detects Tailwind CSS v3 class names that were **renamed or removed** in [Tailwin
 
 ---
 
+### 💡 `enforces-size-shorthand`
+
+Tailwind CSS v4 introduced the [`size-{n}`](https://tailwindcss.com/docs/size) utility, which sets both `width` and `height` to the same value in a single class. This rule detects when `w-X` and `h-X` appear together with an **identical value** and suggests using `size-X` instead.
+
+```jsx
+// ✗ Flagged — redundant pair when values are equal
+<div className="w-4 h-4 p-2" />
+<div className="flex items-center w-full h-full" />
+
+// ✓ Valid — use the size-* shorthand
+<div className="size-4 p-2" />
+<div className="flex items-center size-full" />
+```
+
+> Note: the rule only flags pairs where **both values are the same** (zero false positives). `w-4 h-8` is intentionally ignored because `size-*` would not produce the same result.
+
+Covers all 48 default Tailwind v4 size values: numeric scale (`0`–`96`) and named values (`full`, `screen`, `auto`, `fit`, `min`, `max`, `px`, `svh`, `lvh`, `dvh`, and more).
+
+**Severity:** `hint` (advisory)
+
+---
+
 ## ❓ Why are some rules missing?
 
 The four remaining `eslint-plugin-tailwindcss` rules require capabilities that [GritQL](https://biomejs.dev/reference/gritql/) does not currently support:
@@ -281,14 +304,15 @@ npm install
 npm test
 ```
 
-**Test matrix (8 tests):**
+**Test matrix (10 tests):**
 
 | Suite | Invalid fixture | Valid fixture |
 |---|---|---|
 | `no-arbitrary-value` | triggers ≥ 1 diagnostic | produces 0 diagnostics |
 | `enforces-negative-arbitrary-values` | triggers ≥ 1 diagnostic | produces 0 diagnostics |
 | `migration-from-tailwind-3` | triggers ≥ 1 diagnostic | produces 0 diagnostics |
-| `all.grit` (combined) | each invalid triggers ≥ 1 | `arbValid` + `migValid` clean |
+| `enforces-size-shorthand` | triggers ≥ 1 diagnostic | produces 0 diagnostics |
+| `all.grit` (combined) | each invalid triggers ≥ 1 | `arbValid` + `migValid` + `szValid` clean |
 
 ---
 
