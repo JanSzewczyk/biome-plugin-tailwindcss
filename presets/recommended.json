@@ -1,0 +1,20 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "plugins": [
+    "./node_modules/biome-plugin-tailwindcss/rules/no-arbitrary-value.grit",
+    "./node_modules/biome-plugin-tailwindcss/rules/enforces-negative-arbitrary-values.grit",
+    "./node_modules/biome-plugin-tailwindcss/rules/migration-from-tailwind-3.grit",
+    "./node_modules/biome-plugin-tailwindcss/rules/enforces-size-shorthand.grit"
+  ],
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "unsafe"
+        }
+      }
+    }
+  }
+}

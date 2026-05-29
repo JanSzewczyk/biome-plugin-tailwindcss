@@ -1,0 +1,12 @@
+engine biome(1.0)
+language js(jsx)
+
+JsxAttribute(name = $name) as $attr where {
+    $name <: r".*class.*",
+    $attr <: r".*[a-zA-Z0-9)]][^:].*",
+    register_diagnostic(
+        span = $attr,
+        message = "Avoid arbitrary Tailwind CSS values like `w-[42px]` or `text-[#bada55]`. Use a value from your design scale instead.",
+        severity = "warn"
+    )
+}

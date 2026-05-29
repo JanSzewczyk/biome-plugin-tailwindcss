@@ -1,0 +1,36 @@
+{
+  "name": "biome-plugin-tailwindcss",
+  "version": "0.1.0",
+  "description": "Biome GritQL plugin with Tailwind CSS linting rules — mirrors eslint-plugin-tailwindcss",
+  "keywords": [
+    "biome",
+    "biome-plugin",
+    "tailwindcss",
+    "tailwind",
+    "linter",
+    "gritql"
+  ],
+  "homepage": "https://github.com/JanSzewczyk/biome-plugin-tailwindcss#readme",
+  "bugs": {
+    "url": "https://github.com/JanSzewczyk/biome-plugin-tailwindcss/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JanSzewczyk/biome-plugin-tailwindcss.git"
+  },
+  "license": "MIT",
+  "files": [
+    "rules/**/*.grit",
+    "presets/*.json",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node tests/run.mjs"
+  },
+  "peerDependencies": {
+    "@biomejs/biome": ">=2.0.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16"
+  }
+}
